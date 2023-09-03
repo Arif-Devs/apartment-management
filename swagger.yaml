@@ -1,0 +1,726 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Apartment-management-system'
+  description: 'This is a Apartment management system. where users can get details about billing and notice from author and post about theirs problems. '
+  contact:
+    name: Arifur rahman
+    email: arifur.sew@gmail.com
+
+servers:
+  - description: Dev
+    url: 'http://localhost:4000/api/v1'
+tags:
+  - name: Auth
+    description: Authentication Endpoints
+  - name: Utility
+    description: Utility endpoints
+  - name: User
+    description: User End points
+
+paths:
+  '/auth/register':
+    post:
+      description: create a new account
+      tags: [Auth]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Arif
+                email:
+                  type: string
+                  format: email
+                  example: test@example.com
+
+                password:
+                  type: string
+                  format: password
+                  example: 12345
+              required: [name, email, password]
+      responses:
+        '201':
+          description: signup Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Signup Successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: '/auth/signup'
+                      signin:
+                        type: string
+                        example: '/auth/signin'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/auth/login':
+    post:
+      description: login user
+      tags: [Auth]
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: test@example.com
+                password:
+                  type: string
+                  format: password
+                  example: 12345
+              required: [email, password]
+      responses:
+        '200':
+          description: signin successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: signin successfull
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                      links:
+                        type: object
+                        properties:
+                          self:
+                            type: object
+                            example: '/auth/signin'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/utilities':
+    get:
+      tags: [Utility]
+      description: Get all published Utility
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/sortTypeParam'
+        - $ref: '#/components/parameters/searchParam'
+      responses:
+        '200':
+          description: Return a list of Utility
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              format: int32
+                              example: 1
+                            name:
+                              type: string
+                              example: name
+                            flatNo:
+                              type: integer
+                              format: int32
+                              example: 101
+
+                            author:
+                              $ref: '#/components/schemas/AuthorDTO'
+                            link:
+                              type: string
+                              format: url
+                              example: '/utilities/1'
+
+                          required: [id, name, flatNo, author]
+                        - $ref: '#/components/schemas/Timestamp'
+                  pagination:
+                    $ref: '#/components/schemas/pagination'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: '/utilities?page=2&limit=10'
+                      nextPage:
+                        type: string
+                        format: url
+                        example: '/utilities?page=3&limit=10'
+                      prevPage:
+                        type: string
+                        format: url
+                        example: '/utilities?page=1&limit=10'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Utility]
+      description: create a new utility
+      requestBody:
+        description: admin or manager post all utilities of flat owners
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: name
+                flatNo:
+                  type: integer
+                  format: int32
+                  example: 101
+                ElectricityBill:
+                  type: integer
+                  format: int32
+                  example: 12000
+                GasBill:
+                  type: integer
+                  format: int32
+                  example: 1200
+                InternetBill:
+                  type: integer
+                  format: int32
+                  example: 1000
+                ServiceCharge:
+                  type: integer
+                  format: int32
+                  example: 8000
+                status:
+                  type: string
+                  enum: [draft, published]
+                  example: draft
+
+              required:
+                [
+                  name,
+                  flatNo,
+                  ElectricityBill,
+                  GasBill,
+                  InternetBill,
+                  ServiceCharge,
+                ]
+      responses:
+        '201':
+          description: utility created successful
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/UtilityCreateDTO'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+  '/utilities/{id}':
+    get:
+      tags: [Utility]
+      description: Get a single utility
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+        - in: query
+          name: expand
+          description: expand author object
+          schema:
+            type: string
+            example: author
+      responses:
+        '200':
+          description: single utility
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/utility'
+                      - type: object
+                        properties:
+                          author:
+                            $ref: '#/components/schemas/AuthorDTO'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: '/utilities/1'
+                      author:
+                        type: string
+                        example: '/utilities/1/author'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      security:
+        - bearerAuth: []
+      tags: [Utility]
+      description: Create or update utility
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  example: 1
+                name:
+                  type: string
+                  example: name
+                flatNo:
+                  type: integer
+                  format: int32
+                  example: 101
+
+                ElectricityBill:
+                  type: integer
+                  format: int32
+                  example: 12000
+                GasBill:
+                  type: integer
+                  format: int32
+                  example: 1200
+                InternetBill:
+                  type: integer
+                  format: int32
+                  example: 1000
+                ServiceCharge:
+                  type: integer
+                  format: int32
+                  example: 8000
+                status:
+                  type: string
+                  enum: [draft, published]
+                  example: draft
+              required:
+                [
+                  name,
+                  flatNo,
+                  ElectricityBill,
+                  GasBill,
+                  InternetBill,
+                  ServiceCharge,
+                ]
+      responses:
+        '200':
+          description: successfully Updated
+          content: &utility_update_content
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/UtilityUpdateDTO'
+        '201':
+          description: Successfully Created
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/UtilityCreateDTO'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Utility]
+      description: Partially update utility
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: name
+                flatNo:
+                  type: integer
+                  format: int32
+                  example: 101
+
+                ElectricityBill:
+                  type: integer
+                  format: int32
+                  example: 12000
+                GasBill:
+                  type: integer
+                  format: int32
+                  example: 1200
+                InternetBill:
+                  type: integer
+                  format: int32
+                  example: 1000
+                ServiceCharge:
+                  type: integer
+                  format: int32
+                  example: 8000
+                status:
+                  type: string
+                  enum: [draft, published]
+                  example: draft
+
+      responses:
+        '200':
+          description: successfully Updated
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/UtilityUpdateDTO'
+
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Utility]
+      description: Delete an utility byt Id
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: Utility delete successfully
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    utility:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+              example: 1
+            authorId:
+              type: integer
+              format: int32
+              example: 1
+            name:
+              type: string
+              example: name
+            flatNo:
+              type: integer
+              format: int32
+              example: 101
+
+            ElectricityBill:
+              type: integer
+              format: int32
+              example: 12000
+            GasBill:
+              type: integer
+              format: int32
+              example: 1200
+            InternetBill:
+              type: integer
+              format: int32
+              example: 1000
+            ServiceCharge:
+              type: integer
+              format: int32
+              example: 8000
+            status:
+              type: string
+              enum: [draft, published]
+              example: draft
+          required:
+            [
+              name,
+              flatNo,
+              ElectricityBill,
+              GasBill,
+              InternetBill,
+              ServiceCharge,
+              status,
+            ]
+        - $ref: '#/components/schemas/Timestamp'
+    UtilityCreateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: utility created successfully
+        data:
+          $ref: '#/components/schemas/utility'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: '/utilities/1'
+            author:
+              type: string
+              format: url
+              example: '/utilities/1/author'
+    UtilityUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: Utility created successfully
+        data:
+          $ref: '#/components/schemas/utility'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              example: '/utilities/1'
+
+    Timestamp:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [createdAt, updatedAt]
+    AuthorDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: Arif
+
+      required: [id, name]
+    pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          example: 2
+        limit:
+          type: integer
+          format: int32
+          example: 10
+        next:
+          type: integer
+          format: int32
+          example: 3
+        prev:
+          type: integer
+          format: int32
+          example: 1
+        totalPage:
+          type: integer
+          format: int32
+          example: 5
+        totalItems:
+          type: integer
+          format: int32
+          example: 50
+      required:
+        - page
+        - limit
+        - totalPage
+        - totalItems
+  responses:
+    '500':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              error message:
+                type: string
+                example: Internal server error
+              message:
+                type: string
+                example: we are sorry for this issue. Please tyr again later
+    '404':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 404
+              error message:
+                type: string
+                example: Not found
+              message:
+                type: string
+                example: Request resources not found
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 401
+              error message:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Dont have the right permissions
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 400
+              error message:
+                type: string
+                example: Bad Request
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                      example: email
+                    message:
+                      type: string
+                      example: Invalid email
+                    in:
+                      type: string
+                      enum: [query, body]
+                      example: body
+  parameters:
+    pageParam:
+      in: query
+      name: page
+      description: current page number
+      schema:
+        type: integer
+        format: int32
+        example: 2
+    limitParam:
+      in: query
+      name: limit
+      description: maximum items to be returned
+      schema:
+        type: integer
+        format: int32
+        example: 10
+    sortTypeParam:
+      in: query
+      name: sort_type
+      description: type of sorting (asc or dsc)
+      schema:
+        type: string
+        enum: [asc, dsc]
+        example: dsc
+    sortByParam:
+      in: query
+      name: sort_by
+      description: sort_key
+      schema:
+        type: string
+        example: updatedAt
+    searchParam:
+      in: query
+      name: search
+      description: search term
+      schema:
+        type: string
+        example: name
+    idPathParam:
+      in: path
+      name: id
+      required: true
+      description: utility id
+      schema:
+        type: string
+        example: 64e3a4204e73944d69e353a6
