@@ -1,7 +1,7 @@
 const { userExist, createUser, findUserByEmail } = require('../user');
 const { badRequest } = require('../../utils/error');
 const { generateHash, hashMatched } = require('../../utils/hash');
-const { generateToken } = require('../token');
+const { createToken } = require('../token/createToken');
 
 const register = async ({ name, email, password }) => {
   const hasUser = await userExist(email);
@@ -31,7 +31,7 @@ const login = async ({ email, password }) => {
     email: user.email,
     role: user.role,
   };
-  const token = generateToken({ payload });
+  const token = createToken({ payload });
   return token;
 };
 

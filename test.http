@@ -2,8 +2,8 @@ POST http://localhost:4000/api/v1/auth/register
 Content-Type: application/json
 
 {
- "name": "rasel hossain",
- "email": "rasel@gmail.com",
+ "name": "akter hossain",
+ "email": "akter@gmail.com",
  "password": "pass123"
 }
 
@@ -12,23 +12,24 @@ POST http://localhost:4000/api/v1/auth/login
 Content-Type: application/json
 
 {
- "email": "rasel@gmail.com",
+ "email": "akter@gmail.com",
  "password": "pass123"
 }
  
 ###
 POST http://localhost:4000/api/v1/utilities
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZjQ4MDIzYzgyMzlhN2MwMDgxYzdhOCIsIm5hbWUiOiJyYXNlbCBob3NzYWluIiwiZW1haWwiOiJyYXNlbEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM3NTU3MjUsImV4cCI6MTY5Mzc1OTMyNX0.gcPrMHs8PBmUDSiHK6fQeRI0CJgAlZ885cTdQDV-NXg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc2YzJjODRmY2U1ODgxMjU3NWMwYiIsIm5hbWUiOiJha3RlciBob3NzYWluIiwiZW1haWwiOiJha3RlckBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY5MzkzNjcwOCwiZXhwIjoxNjkzOTQwMzA4fQ.-3UcEGU93X6OG4XzDVyy3VbAQuE_llv9MQGlwzPex1Q
 
 
 { 
-  "name": "utility created",
+  "name": " new akter",
   "flatNo": 101,
   "ElectricityBill": 12000,
   "GasBill": 1200,
   "InternetBill": 1000,
-  "ServiceCharge":8000
+  "ServiceCharge":8000,
+  "role": "admin"
   
 }
 ###

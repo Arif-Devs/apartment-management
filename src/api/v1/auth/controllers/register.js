@@ -1,5 +1,5 @@
 const registerService = require('../../../../lib/auth');
-const { generateToken } = require('../../../../lib/token');
+const { createToken } = require('../../../../lib/token/createToken');
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
       email: user.email,
       role: user.role,
     };
-    const accessToken = generateToken({ payload });
+    const accessToken = createToken({ payload });
 
     const response = {
       code: 201,

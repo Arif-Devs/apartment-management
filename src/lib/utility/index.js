@@ -35,7 +35,7 @@ const count = ({ search = '' }) => {
 };
 
 // Create new utility
-const create = async ({
+const createUtility = async ({
   name,
   flatNo,
   ElectricityBill = '',
@@ -185,7 +185,7 @@ const checkOwnership = async ({ resourceId, userId }) => {
 
 module.exports = {
   findAllUtility,
-  create,
+  createUtility,
   count,
   findSingleItem,
   updateOrCreate,

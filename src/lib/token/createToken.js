@@ -1,7 +1,7 @@
 const { serverError } = require('../../utils/error');
 const jwt = require('jsonwebtoken');
 
-const generateToken = ({
+const createToken = ({
   payload,
   algorithm = 'HS256',
   secret = process.env.ACCESS_TOKEN_SECRET,
@@ -34,4 +34,4 @@ const verifyToken = ({
   }
 };
 
-module.exports = { generateToken, decodeToken, verifyToken };
+module.exports = { createToken, decodeToken, verifyToken };

@@ -1,4 +1,5 @@
 const loginService = require('../../../../lib/auth');
+
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -9,6 +10,7 @@ const login = async (req, res, next) => {
       message: 'login successful',
       data: {
         access_token: accessToken,
+
         links: {
           self: req.url,
         },

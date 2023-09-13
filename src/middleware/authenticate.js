@@ -1,5 +1,5 @@
-const { authenticationError, authorizationError } = require('../utils/error');
-const tokenService = require('../lib/token');
+const { authenticationError } = require('../utils/error');
+const tokenService = require('../lib/token/createToken');
 const userService = require('../lib/user');
 
 const authenticate = async (req, res, next) => {

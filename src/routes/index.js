@@ -11,12 +11,20 @@ router.post('/api/v1/auth/login', authController.login);
 router
   .route('/api/v1/utilities')
   .get(utilityController.findAll)
-  .post(authenticate, authorize(['admin']), utilityController.create);
+  .post(
+    authenticate,
+    authorize(['admin', 'user']),
+    utilityController.createUtility
+  );
 router
   .route('/api/v1/utilities/:id')
   .get(utilityController.findSingleItem)
   .put(authenticate, authorize(['admin']), utilityController.updateItem)
-  .patch(authenticate, authorize(['admin']), utilityController.updateItemPatch)
+  .patch(
+    authenticate,
+    authorize(['admin']),
+    utilityController.updateItemByPatch
+  )
   .delete(
     authenticate,
     authorize(['admin']),

@@ -23,7 +23,7 @@ const getPagination = ({
   return pagination;
 };
 
-const getHateoas = ({
+const hateoas = ({
   url = '/',
   path = '',
   query = {},
@@ -53,7 +53,7 @@ const getHateoas = ({
   return links;
 };
 
-const transformedItems = ({ items = [], selection = [], path = '/' }) => {
+const transformedDataItems = ({ items = [], selection = [], path = '/' }) => {
   if (!Array.isArray(items) || !Array.isArray(selection)) {
     throw new Error('invalid selection');
   }
@@ -70,4 +70,4 @@ const transformedItems = ({ items = [], selection = [], path = '/' }) => {
   });
 };
 
-module.exports = { getPagination, getHateoas, transformedItems };
+module.exports = { getPagination, hateoas, transformedDataItems };

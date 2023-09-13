@@ -1,6 +1,6 @@
 const utilityService = require('../../../../lib/utility');
 
-const updateItemPatch = async (req, res, next) => {
+const updateItemByPatch = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -28,4 +28,4 @@ const updateItemPatch = async (req, res, next) => {
   }
 };
 
-module.exports = updateItemPatch;
+module.exports = updateItemByPatch;

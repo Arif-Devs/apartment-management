@@ -1,7 +1,7 @@
 const utilityService = require('../../../../lib/utility');
 const { Utility } = require('../../../../model');
 
-const create = async (req, res, next) => {
+const createUtility = async (req, res, next) => {
   const {
     name,
     flatNo,
@@ -13,7 +13,7 @@ const create = async (req, res, next) => {
   } = req.body;
 
   try {
-    const utility = await utilityService.create({
+    const utility = await utilityService.createUtility({
       name,
       flatNo,
       ElectricityBill,
@@ -37,4 +37,4 @@ const create = async (req, res, next) => {
     next(e);
   }
 };
-module.exports = create;
+module.exports = createUtility;

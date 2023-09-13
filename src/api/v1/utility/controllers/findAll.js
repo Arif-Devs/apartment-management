@@ -1,5 +1,5 @@
 const utilityService = require('../../../../lib/utility');
-const { query, queryStr } = require('../../../../utils');
+const { query } = require('../../../../utils');
 const defaults = require('../../../../config/defaults');
 
 const findAll = async (req, res, next) => {
@@ -17,7 +17,7 @@ const findAll = async (req, res, next) => {
       sortType,
       search,
     });
-    const data = query.transformedItems({
+    const data = query.transformedDataItems({
       items: utilities,
       path: '/utilities',
       selection: ['id', 'name', 'flatNo', 'author', 'createdAt', 'updatedAt'],
@@ -28,7 +28,7 @@ const findAll = async (req, res, next) => {
     const pagination = query.getPagination({ totalItems, limit, page });
 
     //Hateoas
-    const links = query.getHateoas({
+    const links = query.hateoas({
       url: req.url,
       path: req.path,
       query: req.query,

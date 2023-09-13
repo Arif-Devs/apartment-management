@@ -1,4 +1,4 @@
-const config = {
+const defaultValue = {
   totalItems: 0,
   limit: 10,
   page: 1,
@@ -7,4 +7,4 @@ const config = {
   search: '',
 };
 
-module.exports = Object.freeze(config);
+module.exports = Object.freeze(defaultValue);

@@ -1,15 +1,15 @@
 const findAll = require('./findAll');
-const create = require('./create');
+const createUtility = require('./create');
 const findSingleItem = require('./findSingleItem');
 const updateItem = require('./updateItem');
-const updateItemPatch = require('./updateByPatch');
+const updateItemByPatch = require('./updateByPatch');
 const removeItem = require('./removeItem');
 
 module.exports = {
   findAll,
-  create,
+  createUtility,
   findSingleItem,
   updateItem,
-  updateItemPatch,
+  updateItemByPatch,
   removeItem,
 };
